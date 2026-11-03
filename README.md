@@ -4,7 +4,7 @@
 > 作者：ChenyangZhao7  
 > 版本：v0.1.0
 
-抓取巨潮资讯网（cninfo.com.cn）A 股**年报摘要**，把 PDF 文本层逐页转成 Markdown，输出：
+抓取巨潮资讯网（cninfo.com.cn）A 股**年报摘要**，把 PDF 文本层逐页转成 Markdown；附带一个互动易**投资者问答挖掘器**。输出：
 
 - 一个合并版 Markdown（适合直接阅读、全文检索）；
 - 每份摘要一个单文件 Markdown；
@@ -116,6 +116,51 @@ python cninfo_summary_crawler.py --year 2025 --target 50 --no-raw
 - 每页保留 `<!-- page: N -->`；
 - 每份文件保留 `source_url`、`retrieved_at`、`sha256`；
 - 正文来自 PDF 文本层，表格按文本行保留，尚未做结构化 Markdown 表格。
+
+## 抓取投资者问答（可选）
+
+`cninfo_question_miner.py` 抓取投资者对企业的提问，统计“大家最常问什么”：
+
+- 深市/北交所：深交所互动易；
+- 沪市：上证e互动；
+- 输出每家公司的问题、回答、日期、原文链接，以及全市场高频关注词。
+
+```powershell
+# 用年报摘要爬虫产出的 manifest（推荐）
+python cninfo_question_miner.py --manifest cninfo_output/manifest.jsonl
+
+# 或者自己准备一个 CSV
+# company_code,company_name
+# 000001,平安银行
+# 600519,贵州茅台
+python cninfo_question_miner.py --companies companies.csv
+```
+
+输出：
+
+```text
+questions_output/
+  questions.md        # 高频关注点 + 分公司问题
+  questions.jsonl     # 全量问题、回答、日期、链接
+  REPORT.md
+```
+
+常用参数：
+
+| 参数 | 默认 | 说明 |
+|---|---:|---|
+| `--limit-per-company` | 30 | 每家公司最多抓多少条，0=不限 |
+| `--max-pages` | 3 | 每家公司最多翻页数 |
+| `--top-per-company` | 10 | Markdown 里每家公司展示多少条 |
+| `--top-keywords` | 20 | 高频关注词展示多少个 |
+| `--interval` | 1.0 | 请求间隔秒数 |
+
+说明：
+
+- “高频关注点”是固定词表的字符串计数，**不调用 LLM**，可复现；
+- 每家公司的问题按点赞数、日期排序；互动易点赞通常为 0，所以日期是主要排序依据；
+- 上证e互动的问题来自公司页 HTML，回答内容暂未抓取；互动易带回答；
+- 只抓公开问答，不绕过登录/验证码。
 
 ## 已知限制
 
