@@ -176,6 +176,16 @@ questions_output/
 - 上传/发布前请自行确认巨潮资讯网的服务条款和当地法律；
 - 与本项目无关的任何数据再分发风险由使用者承担。
 
+## 示例题集
+
+`questions/` 下附了用 50 份年报摘要生成的 **80 道 AI 候选题**：
+
+- `questions/questions_s_80_candidates.jsonl`
+- `questions/questions_s_80_candidates.md`
+- `questions/questions_s_80_candidates.validation.md`
+
+这些是候选，不是正式题集；正式使用前需要人工核对答案、页码和题面。
+
 ## License
 
 未附带 LICENSE 文件；上传 GitHub 前请按你的需要选择许可证。
