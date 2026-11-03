@@ -1,42 +1,45 @@
-# 80 道 AI 候选题
+# 题集与工具
 
-这些题目是用 `cninfo_summary_crawler.py` 抓取的 50 份 2025 年年报摘要生成的**候选**题集，不是正式题集。
+## 当前 80 题
 
-| 文件 | 说明 |
-|---|---|
-| `questions_s_80_candidates.jsonl` | 80 行，A20 / B20 / C15 / D15 / E10 |
-| `questions_s_80_candidates.md` | 人工审阅表 |
-| `questions_s_80_candidates.validation.md` | 机械校验结果 |
+- `official_80.jsonl`：80 道题，A20 / B20 / C15 / D15 / E10；
+- `official_80.md`：人工审阅表；
+- `official_80.validation.md`：校验报告。
 
-每行字段：
+题目基于 50 份 2025 年年报摘要，证据路径形如：
 
-```json
-{
-  "id": "q301",
-  "category": "A",
-  "question": "...",
-  "answer": "...",
-  "evidence": [{"file": "603801_志邦家居/2025_年度报告摘要.md", "locator": "第 2 页，利润分配预案"}],
-  "probe": "...",
-  "notes": "...",
-  "status": "ai_candidate",
-  "official": false
-}
+```text
+603801_志邦家居/2025_年度报告摘要.md
 ```
 
-## 重要
+这些摘要文件不在本仓库里；校验时用 `--corpus` 指向本地语料目录。
 
-按主项目的 `questions/HUMAN_AUTHORING.md`，正式 80 题必须由人写/确认。这里所有题都标了：
+## 校验 / 渲染工具
 
-```json
-"status": "ai_candidate",
-"official": false
+```text
+scripts/question_set_tool.py
+scripts/run_question_tool.bat
+scripts/README.md
 ```
 
-正式使用前需要：
+常用命令：
 
-1. 逐题对照原文，核对答案和页码；
-2. 改写题面；
-3. 把 `status` 改为 `official`，或另存为 `official.jsonl`。
+```powershell
+python -X utf8 scripts/question_set_tool.py all --strict
+python -X utf8 scripts/question_set_tool.py check --strict
+python -X utf8 scripts/question_set_tool.py render
+```
 
-D 类的 `answer` 是“必须覆盖的要点”，不是最终长文答案。
+在有语料的本机：
+
+```powershell
+python -X utf8 scripts/question_set_tool.py all --strict `
+  --corpus "Z:\Default Project\corpus\incoming\summaries"
+```
+
+没有语料时，工具只做结构校验（分类数量、字段、D 类长度/结构），并跳过 probe 和证据文件检查。
+
+## 历史 AI 候选
+
+`questions_s_80_candidates.jsonl`、`.md`、`.validation.md` 是生成过程中的 AI 候选版本，
+保留作对比；当前以 `official_80.jsonl` 为准。
