@@ -123,7 +123,7 @@ python cninfo_summary_crawler.py --year 2025 --target 50 --no-raw
 
 - 深市/北交所：深交所互动易；
 - 沪市：上证e互动；
-- 输出每家公司的问题、回答、日期、原文链接，以及全市场高频关注词。
+- 输出每家公司的问题、回答、日期、原文链接，以及样本内高频关注词。
 
 ```powershell
 # 用年报摘要爬虫产出的 manifest（推荐）
