@@ -34,7 +34,7 @@ python -X utf8 scripts/question_set_tool.py render
 
 ```powershell
 python -X utf8 scripts/question_set_tool.py all --strict `
-  --corpus "Z:\Default Project\corpus\incoming\summaries"
+  --corpus "path\to\corpus\incoming\summaries"
 ```
 
 没有语料时，工具只做结构校验（分类数量、字段、D 类长度/结构），并跳过 probe 和证据文件检查。
